@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+require("dotenv").config();
+const port = process.env.PORT;
 
-app.use(express.urlencoded({extended : true}));
+app.use(express.urlencoded({extended : false}));
+require("./db/connection")
 
 app.listen(port,()=>{
     console.log("Express server is Running!")
