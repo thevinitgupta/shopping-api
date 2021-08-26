@@ -19,10 +19,21 @@ const saltRounds = 10;
 router.post("/signup",(req,res)=>{
     const userData = req.body;
     const validated = userDetailValidation(userData);
-    if(validated.code !== 200) {
+    if(!userData.name || !userData.password || !userData.email){
+        res.status(400).json({
+            message : "Required field/fields empty!"
+        })
+    }
+
+    else if(validated.code !== 200) {
         const errMessage = `Signup error : ${validated.email===false && validated.phone===false ? "Invalid Email and Phone" : validated.email === true ? "Invalid Phone" : "Invalid Email"}`;
         res.status(400).json({
             message : errMessage
+        })
+    }
+    else if(userData.password.length<8){
+        res.status(400).json({
+            message : "Password length must be atleast 8"
         })
     }
     else {
@@ -62,10 +73,58 @@ router.post("/signup",(req,res)=>{
     }
 })
 
+/**
+ * body : {
+ *      email : "thevinitgupta@gmail.com",
+ *      password : "password123"
+ * }
+ */
 router.post("/login",(req,res)=>{
-
+    const {email,password} = req.body;
+    if(!email || !password){
+        res.status(400).json({
+            message : "Required Fields Empty"
+        })
+    }
+    try {
+        User.findOne({email},async (err,foundUser)=>{
+            if(err){
+                res.status(500).json({
+                    message : "Internal Server Error"
+                })
+            }
+            else if(!foundUser){
+                res.status(400).json({
+                    message : "User with Email does not Exist"
+                })
+            }
+            else {
+                const isMatch = await bcrypt.compare(password, foundUser.password);
+                if (!isMatch)
+                return res.status(400).json({
+                  message: 'Incorrect Password !',
+                });
+           
+                //generating jwt token
+                const token = await foundUser.generateAuthToken();
+    
+                if(token){
+                    res.status(200).json({
+                    accessToken: token,
+                  });
+                }
+            }
+        })
+    }
+    catch(e){
+        console.log(e);
+        res.status(500).json({
+            message : "Error in creating token!"
+        })
+    }
 })
 
+//!delete all users
 router.delete("/",(req,res)=>{
     User.deleteMany({},(err,deleteSuccess)=>{
         if(deleteSuccess){
@@ -75,8 +134,10 @@ router.delete("/",(req,res)=>{
         }
     });
 })
+
+//get all users
 router.get("/",(req,res)=>{
-    User.find({},(err,users)=>{
+    User.find({},{password : 0},(err,users)=>{
         if(err){
             res.status(500).json({
                 message : "Server Error : Cannot get Users!"
@@ -90,6 +151,7 @@ router.get("/",(req,res)=>{
     });
 })
 
+//get user details from email
 router.get("/:email",(req,res)=>{
     const email = req.params.email;
     User.findOne({email},{password : 0},(err,user)=>{

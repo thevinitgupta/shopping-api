@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 const UserSchema = new Schema({
     name : {
@@ -18,7 +19,8 @@ const UserSchema = new Schema({
     phone : {
         type : String,
         required : true,
-        length : 10
+        length : 10,
+        unique : false
     },
     tokens : [{
         accessToken : String
