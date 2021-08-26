@@ -62,4 +62,53 @@ router.post("/signup",(req,res)=>{
     }
 })
 
+router.post("/login",(req,res)=>{
+
+})
+
+router.delete("/",(req,res)=>{
+    User.deleteMany({},(err,deleteSuccess)=>{
+        if(deleteSuccess){
+            res.status(200).json({
+                message : "All users deleted!!"
+            })
+        }
+    });
+})
+router.get("/",(req,res)=>{
+    User.find({},(err,users)=>{
+        if(err){
+            res.status(500).json({
+                message : "Server Error : Cannot get Users!"
+            })
+        }
+        if(users){
+            res.status(200).json({
+               users
+            })
+        }
+    });
+})
+
+router.get("/:email",(req,res)=>{
+    const email = req.params.email;
+    User.findOne({email},{password : 0},(err,user)=>{
+        if(err){
+            res.status(500).json({
+                message : "Server Error : Cannot get Users!"
+            })
+        }
+        else if(!user){
+            res.status(404).json({
+                message : "User with Email does not exist!"
+            })
+        }
+        else{
+            res.status(200).json({
+               user
+            })
+        }
+    });
+})
+
 module.exports = router;

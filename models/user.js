@@ -20,9 +20,29 @@ const UserSchema = new Schema({
         required : true,
         length : 10
     },
+    tokens : [{
+        accessToken : String
+    }],
     ordersList : [{
         type : mongoose.Types.ObjectId
     }],
 })
+
+UserSchema.methods.generateAuthToken = async function () {
+    // Generate an auth token for the user
+    const user = this;
+    const payload = {
+      user: {
+        id: user.id,
+        email: user.email,
+      },
+    };
+    // const token = jwt.sign(payload, 'Secret Key');
+  
+    const token = jwt.sign(payload, "e73jj/2cQv");
+    user.tokens = user.tokens.concat({ token });
+    await user.save();
+    return token;
+  };
 
 module.exports = mongoose.model("user",UserSchema);
