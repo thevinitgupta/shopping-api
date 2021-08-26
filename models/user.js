@@ -6,6 +6,10 @@ const UserSchema = new Schema({
         type : String,
         required : true
     },
+    password : {
+        type : String,
+        required : true 
+    },
     email : {
         type : String,
         required : true,
@@ -14,7 +18,8 @@ const UserSchema = new Schema({
     phone : {
         type : String,
         required : true,
-        unique : true
+        unique : true,
+        length : 10
     },
     ordersList : [{
         type : mongoose.Types.ObjectId
