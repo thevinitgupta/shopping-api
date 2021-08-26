@@ -3,12 +3,12 @@ const app = express();
 require("dotenv").config();
 const port = process.env.PORT;
 
-const signupRoute = require("./routes/signup")
+const userRoutes = require("./routes/userRoutes")
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 require("./db/connection")
 
-app.use("/user",signupRoute);
+app.use("/user",userRoutes);
 
 app.listen(port,()=>{
     console.log("Express server is Running!")

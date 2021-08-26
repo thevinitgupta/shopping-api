@@ -8,4 +8,6 @@ router.post("/login",(req,res)=>{
     res.status(200).json({
         message : "logged in"
     })
+
+    //!compare password : const isMatch = await bcrypt.compare(password, user.password);
 })
