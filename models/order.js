@@ -34,10 +34,15 @@ const OrderSchema = new Schema({
     deliveryLocation : {
         name : String,
         address : String,
+        contact : String,
         pinCode : {
             type : Number,
             required : true
         }
+    },
+    totalCost : {
+        type : Number,
+        required : true
     }
 });
 
