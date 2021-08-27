@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const Product = require("../models/product");
+const validateId = require("../validators/validateId");
 
 /**
  * body : {
@@ -53,6 +54,22 @@ router.get("/",(req,res)=>{
             })
         }
     })
+})
+
+//get product details from id
+//get the products list
+router.get("/:id",(req,res)=>{
+    const id = req.params.id;
+    const isValidId = validateId(id);
+    if(!isValidId){
+        res.status(400).json({
+            message : "Invalid Product Id"
+        });
+    }
+    else {
+        
+    }
+    
 })
 
 router.delete("/",(req,res)=>{
