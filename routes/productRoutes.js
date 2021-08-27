@@ -40,6 +40,20 @@ router.post("/add",async (req,res)=>{
 })
 
 //get the products list
+router.get("/",(req,res)=>{
+    Product.find({},{name : 1,cost : 1,count : 1},(err,productsList)=>{
+        if(err){
+            res.status(500).json({
+                message : "Getting Products Error"
+            })
+        }
+        else {
+            res.status(200).json({
+                products : productsList
+            })
+        }
+    })
+})
 
 router.delete("/",(req,res)=>{
     Product.deleteMany({},(err,deleteSuccess)=>{
