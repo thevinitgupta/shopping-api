@@ -27,7 +27,8 @@ router.post("/add",async (req,res)=>{
         newProduct.save((err,newProductSaved)=>{
             if(err){
                 res.status(500).json({
-                    message : "Product Save Error"
+                    message : "Product Save Error",
+                    cause : String(err).split("Path")[1].trim()
                 })
             }
             else {
@@ -44,6 +45,7 @@ router.post("/add",async (req,res)=>{
 router.get("/",(req,res)=>{
     Product.find({},{name : 1,cost : 1,count : 1},(err,productsList)=>{
         if(err){
+            
             res.status(500).json({
                 message : "Getting Products Error"
             })
@@ -57,7 +59,6 @@ router.get("/",(req,res)=>{
 })
 
 //get product details from id
-//get the products list
 router.get("/:id",(req,res)=>{
     const id = req.params.id;
     const isValidId = validateId(id);
@@ -67,7 +68,18 @@ router.get("/:id",(req,res)=>{
         });
     }
     else {
-        
+        Product.find({_id : id },(err,product)=>{
+            if(err){
+                res.status(500).json({
+                    message : "Getting Products Error"
+                })
+            }
+            else {
+                res.status(200).json({
+                    product
+                })
+            }
+        })
     }
     
 })
