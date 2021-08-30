@@ -88,10 +88,36 @@ router.delete("/",(req,res)=>{
     Product.deleteMany({},(err,deleteSuccess)=>{
         if(deleteSuccess){
             res.status(200).json({
-                message : "All users deleted!!"
+                message : "All Products deleted!!"
             })
         }
     });
+})
+
+//delete particular Product
+router.delete("/:id",(req,res)=>{
+    const id = req.params.id;
+    const isValidId = validateId(id);
+    if(!isValidId){
+        res.status(400).json({
+            message : "Invalid Product Id"
+        });
+    }
+    else {
+        Product.deleteOne({_id : id},(err,deleteSuccess)=>{
+            if(err){
+                res.status(500).json({
+                    message : "Internal Server Error"
+                })
+            }
+            if(deleteSuccess){
+                res.status(200).json({
+                    message : "Product deleted!!"
+                })
+            }
+        });
+    }
+    
 })
 
 module.exports = router;
