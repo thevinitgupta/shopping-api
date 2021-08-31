@@ -124,6 +124,10 @@ router.post("/login",(req,res)=>{
     }
 })
 
+router.get("/login",(req,res)=>{
+    res.render("pages/login")
+})
+
 //!delete all users
 router.delete("/",(req,res)=>{
     User.deleteMany({},(err,deleteSuccess)=>{
