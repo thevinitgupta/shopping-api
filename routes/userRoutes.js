@@ -158,7 +158,7 @@ router.get("/",(req,res)=>{
 //get user details from email
 router.get("/:email",(req,res)=>{
     const email = req.params.email;
-    User.findOne({email},{password : 0},(err,user)=>{
+    User.findOne({email},{password : 0,tokens : 0},(err,user)=>{
         if(err){
             res.status(500).json({
                 message : "Server Error : Cannot get Users!"
