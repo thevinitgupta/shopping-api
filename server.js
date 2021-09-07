@@ -5,7 +5,7 @@ const port = process.env.PORT;
 
 // setting the view engine to ejs
 app.set('view engine', 'ejs');
-app.use(express.static('static'))
+app.use(express.static(__dirname+'/static'))
 
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
