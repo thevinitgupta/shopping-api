@@ -111,6 +111,7 @@ router.post("/login",(req,res)=>{
                 if(token){
                     res.status(200).json({
                     accessToken: token,
+                    email : foundUser.email
                   });
                 }
             }
@@ -156,6 +157,8 @@ router.get("/",(req,res)=>{
 })
 
 //get user details from email
+
+//TODO : Send the produts list for a user too
 router.get("/:email",(req,res)=>{
     const email = req.params.email;
     User.findOne({email},{password : 0,tokens : 0},(err,user)=>{

@@ -57,6 +57,23 @@ router.get("/",(req,res)=>{
         }
     })
 })
+//get some of the products 
+router.post("/list",(req,res)=>{
+    const ids = req.body;
+    Product.find({ '_id': { $in: ids } },{name : 1,cost : 1,_id : 1},(error,products)=>{
+        if(error){
+            
+            res.status(500).json({
+                message : "Getting Products Error"
+            })
+        }
+        else {
+            res.status(200).json({
+                products
+            })
+        }
+    });
+})
 
 //get product details from id
 router.get("/:id",(req,res)=>{

@@ -78,4 +78,22 @@ router.post("/create", async(req,res)=>{
     }
 })
 
+router.get("/:userId",(req,res)=>{
+    const userId = req.params.userId;
+    console.log(userId);
+    order.find({customerId : userId},(orderErr,orderData)=>{
+        if(orderErr){
+            res.status(500).json({
+                message : "Internal Server Error!"
+            })
+        }
+        else {
+            res.status(200).json({
+                message : "Orders list for user",
+                orders : orderData
+            })
+        }
+    })
+})
+
 module.exports = router;
