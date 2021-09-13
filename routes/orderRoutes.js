@@ -7,6 +7,7 @@ const router = express.Router();
 
 /**
  * body : {
+ *      customerId : "sfegwngijegnf325dsj"
  *      productsList : [
         {
             id : 3ad2bf8123ef93283c2,
@@ -37,15 +38,8 @@ const router = express.Router();
  * }
  */
 router.post("/create", async(req,res)=>{
-    const {customerId} = req.body;
-    const isValidId = validateId(customerId);
-    if(!isValidId){
-        res.status(400).json({
-            message : "Invalid Id format"
-        })
-    }
-    else {
-        const customer = await User.findOne({_id : customerId},{name : 1,ordersList : 1});
+    const {email} = req.body;
+        const customer = await User.findOne({email : email},{name : 1,ordersList : 1});
         console.log(customer)
         if(customer.length<1) {
             res.status(400).json({
@@ -75,7 +69,6 @@ router.post("/create", async(req,res)=>{
                 }
             })
         }
-    }
 })
 
 router.get("/:userId",(req,res)=>{

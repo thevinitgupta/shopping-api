@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
 
 const OrderSchema = new Schema({
-    customerId : {
-      type : mongoose.Types.ObjectId,
+    email : {
+      type : String,
       required : true
     },
     productsList : [
