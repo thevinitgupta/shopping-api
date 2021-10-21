@@ -109,9 +109,10 @@ router.post("/login",(req,res)=>{
                 const token = await foundUser.generateAuthToken();
     
                 if(token){
+                    foundUser.password = "";
                     res.status(200).json({
                     accessToken: token,
-                    email : foundUser.email
+                    user : foundUser
                   });
                 }
             }
